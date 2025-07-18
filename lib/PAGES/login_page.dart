@@ -9,8 +9,6 @@ import 'package:univox/PAGES/register.dart';
 import '../COMPONENTS/glass_text_field.dart';
 import '../services/loginUser.dart';
 
-
-
 class loginPage extends StatefulWidget {
   final String? token;
   const loginPage({super.key, this.token});
@@ -25,16 +23,19 @@ class _loginPageState extends State<loginPage> {
   final TextEditingController _pass = TextEditingController();
 
   late SharedPreferences prefs;
+  bool _isLoading = false; // <-- Add this line
+
   @override
   void initState() {
     super.initState();
     initSharedPref();
   }
-  void initSharedPref() async{
+
+  void initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
   }
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -49,76 +50,125 @@ class _loginPageState extends State<loginPage> {
 
           /// 🔹 Foreground content with glass effect
           Center(
-            child: Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-                  child: Container(
-                    width: 370,
-                    height: 550,
-                    padding: EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.4),
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                          color: Colors.white,
-                          width: 3
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                child: Container(
+                  width: 370,
+                  height: 550,
+                  padding: EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(102), // 0.4 * 255 = 102
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.white, width: 3),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
 
-                          Text("Login", style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 16),
 
-                          SizedBox(height: 16),
+                        glassTextField(
+                          controller: _email,
+                          hintText: 'Enter Email',
+                        ),
 
-                          glassTextField(controller: _email, hintText: 'Enter Email',),
+                        SizedBox(height: 16),
 
-                          SizedBox(height: 16),
+                        glassTextField(
+                          controller: _pass,
+                          hintText: 'Enter Password',
+                        ),
 
-                          glassTextField(controller: _pass, hintText: 'Enter Password',),
+                        SizedBox(height: 20),
 
-
-                          SizedBox(height: 20),
-
-                          ElevatedButton(
-                            onPressed: ()async{
-                              final prefs = await SharedPreferences.getInstance();
-                              await loginUser(context, _email, _pass, prefs, widget.token);
-                            },
-
-                            style: ElevatedButton.styleFrom(
-                              elevation: 5,
-                              backgroundColor: Colors.lightBlueAccent.withValues(alpha: 0.7),
-                              shadowColor: Colors.white,
-
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 90, vertical: 12),
-                              child: Text('Login', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),),
+                        ElevatedButton(
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  await loginUser(
+                                    context,
+                                    _email,
+                                    _pass,
+                                    prefs,
+                                    widget.token,
+                                  );
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 5,
+                            backgroundColor: Colors.lightBlueAccent.withAlpha(
+                              179,
+                            ), // 0.7 * 255 = 179
+                            shadowColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          const SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center ,
-                            children: [
-                              Text('New User? '),
-                              GestureDetector(
-                                  onTap: () => {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (_) => registerPage(token: widget.token))
-                                    )
-                                  },
-                                  child: Text('Register Now!', style: TextStyle(color: Colors.blue),))
-                            ],
-                          )
-
-                        ],
-                      ),
+                          child: _isLoading
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                    strokeWidth: 3,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 90,
+                                    vertical: 12,
+                                  ),
+                                  child: Text(
+                                    'Login',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('New User? '),
+                            GestureDetector(
+                              onTap: () => {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        registerPage(token: widget.token),
+                                  ),
+                                ),
+                              },
+                              child: Text(
+                                'Register Now!',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
