@@ -9,9 +9,8 @@ import '../MODELS/postModel.dart';
 import '../PROVIDERS/post_provider.dart';
 import '../services/logout.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 class HomePage extends StatefulWidget {
   final String? token;

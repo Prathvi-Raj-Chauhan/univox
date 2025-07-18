@@ -6,12 +6,11 @@ import 'package:univox/PAGES/setup_account.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../COMPONENTS/glass_text_field.dart';
 import 'login_page.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 class registerPage extends StatefulWidget {
   final String? token;

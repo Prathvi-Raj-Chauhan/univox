@@ -8,12 +8,11 @@ import '../MODELS/commentModel.dart';
 import '../MODELS/postModel.dart';
 
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../PROVIDERS/post_comments_providers.dart';
 import '../PROVIDERS/post_provider.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 class PostPage extends StatefulWidget {
   final Post post;

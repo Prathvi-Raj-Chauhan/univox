@@ -4,7 +4,6 @@ import 'dart:ui'; // for ImageFilter
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:univox/PAGES/register.dart';
 
 import '../COMPONENTS/glass_text_field.dart';

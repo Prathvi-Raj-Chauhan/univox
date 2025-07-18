@@ -8,13 +8,12 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../MODELS/postModel.dart';
 import '../PAGES/post_page.dart';
 import '../PROVIDERS/post_form_provider.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 Future<void> uploadPost(BuildContext context, PostFormProvider formProvider, bool isPublished, String? token) async {
   Map<String, dynamic> decodedToken = JwtDecoder.decode(token ?? '');

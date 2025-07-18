@@ -4,9 +4,9 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 
 import '../MODELS/postModel.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 class PostProvider with ChangeNotifier {
   List<Post> _posts = [];
   bool _isLoading = false;

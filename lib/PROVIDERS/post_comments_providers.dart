@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../MODELS/commentModel.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 class CommentsProvider extends ChangeNotifier{
 
   List<Comment> _comments = [];

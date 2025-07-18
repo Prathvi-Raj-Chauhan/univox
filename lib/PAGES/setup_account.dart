@@ -5,12 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../COMPONENTS/glass_text_field.dart';
 import '../SCREENS/main_screen_with_bottom_nav.dart';
 
-final baseUrl = dotenv.env['BACKEND_URL'];
+final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 class AccountSetupPage extends StatefulWidget {
   final String? token;
