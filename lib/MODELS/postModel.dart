@@ -37,7 +37,7 @@ class Post {
       createdBy: json['createdBy'] != null && json['createdBy'] is Map
           ? json['createdBy']['username'] ?? ''
           : '',
-        coverImageURL: json['coverImageURL'] as String? ?? '',
+      coverImageURL: json['coverImageURL'] as String? ?? '',
       upvotes: json['upvotes'] ?? 0,
       downvotes: json['downvotes'] ?? 0,
       voters: Map<String, int>.from(json['voters'] ?? {}),

@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: Image.network(
-                                    '$baseUrl${post.coverImageURL}',
+                                    post.coverImageURL,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) => Text('Image failed to load'),
                                     loadingBuilder: (context, child, loadingProgress) {

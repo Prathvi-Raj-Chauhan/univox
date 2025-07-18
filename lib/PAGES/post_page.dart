@@ -150,7 +150,7 @@ class _PostPageState extends State<PostPage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: Image.network(
-                                    'http://192.168.1.10:8000${Post.coverImageURL}',
+                                    Post.coverImageURL,
                                     fit: BoxFit.cover,
                                     errorBuilder: (_, __, ___) =>
                                         Text('Image failed to load'),
