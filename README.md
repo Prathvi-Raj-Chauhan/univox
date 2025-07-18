@@ -1,4 +1,4 @@
-# 📱 Univox (Flutter Frontend)
+# 📱 Univox
 
 Univox is a mobile app for college communities – think of it as a private Reddit for your campus. Students can create posts, interact through comments, and stay connected.
 
