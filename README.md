@@ -37,7 +37,7 @@ This repository contains the **Flutter frontend** of Univox.
 
 You can download the latest release of the app here:
 
-👉 [Download Univox APK](https://github.com/Prathvi-Raj-Chauhan/univox_backend/releases/latest)
+👉 [Download Univox APK]([https://github.com/Prathvi-Raj-Chauhan/univox_backend/releases/latest](https://github.com/Prathvi-Raj-Chauhan/univox/releases/tag/v1.0.0))
 
 
 
