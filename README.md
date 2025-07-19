@@ -74,6 +74,13 @@ If you find bugs or have suggestions, feel free to open issues or pull requests.
 
 ---
 
+## 🚫 Trademark Notice
+
+The name **"Univox"**, its logo, and branding are the intellectual property of the original author. 
+These elements are **not licensed under the Apache License 2.0**, and **may not be used in derivative works** without prior written permission.
+
+---
+
 ## 📃 License
 
-This project is under the MIT License – see the [LICENSE](LICENSE) file for details.
+This project is under the APACHE License – see the [LICENSE](LICENSE) file for details.
