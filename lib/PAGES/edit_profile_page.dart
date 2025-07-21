@@ -25,6 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController collegeController;
   late TextEditingController branchController;
   late TextEditingController yearController;
+  late String profilePictureURL;
 
   bool _isLoading = false;
 
@@ -36,6 +37,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     collegeController = TextEditingController(text: widget.userData['college']);
     branchController = TextEditingController(text: widget.userData['branch']);
     yearController = TextEditingController(text: widget.userData['year'].toString());
+    profilePictureURL = widget.userData['profilePictureURL'] ?? "";
   }
 
   Future<void> updateProfile() async {
@@ -49,6 +51,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       "college": collegeController.text,
       "branch": branchController.text,
       "year": yearController.text,
+      "profilePictureURL": profilePictureURL
     });
 
     final response = await http.patch(
