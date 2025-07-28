@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univox/PAGES/setup_account.dart';
 
 import 'PROVIDERS/bottom_navbar.dart';
 import 'PROVIDERS/post_comments_providers.dart';
@@ -19,13 +20,15 @@ void main() async {
   } catch (e, st) {
     print("Error initializing app: $e\n$st");
 
-    runApp(const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text("Something went wrong while launching the app."),
+    runApp(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text("Something went wrong while launching the app."),
+          ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        // home: AccountSetupPage(token: token),
         home: Authgate(token: token),
       ),
     );

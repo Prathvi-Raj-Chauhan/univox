@@ -127,7 +127,7 @@ class _AccountPageState extends State<AccountPage> {
                                     CircleAvatar(
                                       radius: 50,
                                       backgroundColor: Colors.grey[300],
-                                      backgroundImage: AssetImage('assets/default.png'),
+                                      backgroundImage: userData['profilePictureURL'] == '' ? AssetImage('assets/default.png') : NetworkImage(userData['profilePictureURL']),
                                     ),
                                     const SizedBox(width: 10),
                                     IconButton(

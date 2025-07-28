@@ -151,11 +151,15 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Row(
                                   children: [
-                                    Icon(
-                                      Icons.person_outline,
-                                      size: 18,
-                                      color: Colors.grey[700],
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          post.profilePictureURL != ''
+                                          ? NetworkImage(post.profilePictureURL)
+                                          : AssetImage(
+                                              'assets/default.png',
+                                            ), 
                                     ),
+                                    
                                     SizedBox(width: 6),
                                     Text(
                                       post.createdBy,
@@ -213,7 +217,6 @@ class _HomePageState extends State<HomePage> {
                               ),
 
                             // Footer:
-                            //TODO: change the color of the button of votes if clicked
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

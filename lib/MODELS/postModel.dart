@@ -12,7 +12,7 @@ class Post {
   final int upvotes;
   final int downvotes;
   final Map<String, int> voters;
-
+  final String profilePictureURL;
 
   Post({
     required this.id,
@@ -22,6 +22,7 @@ class Post {
     required this.createdAt,
     required this.createdBy,
     this.coverImageURL = '',
+    this.profilePictureURL = '',
     this.upvotes = 0,
     this.downvotes = 0,
     required this.voters,
@@ -41,6 +42,9 @@ class Post {
       upvotes: json['upvotes'] ?? 0,
       downvotes: json['downvotes'] ?? 0,
       voters: Map<String, int>.from(json['voters'] ?? {}),
+      profilePictureURL : json['createdBy'] != null && json['createdBy'] is Map
+          ? json['createdBy']['profilePictureURL'] ?? ''
+          : '',
     );
   }
 

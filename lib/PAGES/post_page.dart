@@ -268,10 +268,7 @@ class _PostPageState extends State<PostPage> {
                                       },
                                     ),
                                   ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.share),
-                                  ),
+                                  
                                 ],
                               ),
                             ],
@@ -394,10 +391,8 @@ class _PostPageState extends State<PostPage> {
                                           children: [
                                             Row(
                                               children: [
-                                                Icon(
-                                                  Icons.person_outline,
-                                                  size: 18,
-                                                  color: Colors.grey[700],
+                                                CircleAvatar(
+                                                  backgroundImage: Post.profilePictureURL != '' ? NetworkImage(Post.profilePictureURL) : AssetImage('/assets/default.png'),
                                                 ),
                                                 SizedBox(width: 6),
                                                 Text(
