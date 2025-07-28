@@ -1,6 +1,6 @@
-# 📱 Univox (Flutter Frontend)
+# 📱 Univox
 
-Univox is a mobile app for college communities – think of it as a private Reddit for your campus. Students can create posts, interact through comments, and stay connected.
+Univox is a mobile app for college communities – think of it as a private Forum for your campus. Students can create posts, interact through comments, and stay connected.
 
 This repository contains the **Flutter frontend** of Univox.
 
@@ -37,7 +37,7 @@ This repository contains the **Flutter frontend** of Univox.
 
 You can download the latest release of the app here:
 
-👉 [Download Univox APK](https://github.com/Prathvi-Raj-Chauhan/univox_backend/releases/latest)
+👉 [Download Univox APK]([https://github.com/Prathvi-Raj-Chauhan/univox_backend/releases/latest](https://github.com/Prathvi-Raj-Chauhan/univox/releases/tag/v1.0.0))
 
 
 
@@ -74,6 +74,13 @@ If you find bugs or have suggestions, feel free to open issues or pull requests.
 
 ---
 
+## 🚫 Trademark Notice
+
+The name **"Univox"**, its logo, and branding are the intellectual property of the original author. 
+These elements are **not licensed under the Apache License 2.0**, and **may not be used in derivative works** without prior written permission.
+
+---
+
 ## 📃 License
 
-This project is under the MIT License – see the [LICENSE](LICENSE) file for details.
+This project is under the APACHE License – see the [LICENSE](LICENSE) file for details.
