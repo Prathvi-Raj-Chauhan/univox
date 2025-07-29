@@ -392,7 +392,7 @@ class _PostPageState extends State<PostPage> {
                                             Row(
                                               children: [
                                                 CircleAvatar(
-                                                  backgroundImage: Post.profilePictureURL != '' ? NetworkImage(Post.profilePictureURL) : AssetImage('/assets/default.png'),
+                                                  backgroundImage: comment.commentProfile != '' ? NetworkImage(comment.commentProfile) : AssetImage('/assets/default.png'),
                                                 ),
                                                 SizedBox(width: 6),
                                                 Text(

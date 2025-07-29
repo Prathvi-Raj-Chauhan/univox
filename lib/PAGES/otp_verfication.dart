@@ -9,6 +9,7 @@ import 'package:univox/PAGES/home_page.dart';
 import 'package:univox/PAGES/register.dart';
 import 'package:univox/PAGES/setup_account.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:univox/SCREENS/main_screen_with_bottom_nav.dart';
 class OtpVerficationPage extends StatefulWidget {
   final String? token;
   final String email;
@@ -79,7 +80,7 @@ class _OtpVerficationPageState extends State<OtpVerficationPage> {
         Navigator.of(context).pushAndRemoveUntil(
           /// if we use pushReplacement user wont be able to get back to this page
           MaterialPageRoute(
-            builder: (context) => HomePage(token: userToken),
+            builder: (context) => MainScreenWithNavBar(token: userToken),
           ),
           (route) => false,
         );

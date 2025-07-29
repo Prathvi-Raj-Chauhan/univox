@@ -301,7 +301,7 @@ class _AccountSetupPageState extends State<AccountSetupPage> {
                       glassTextField(
                         controller: _year,
                         obscure: false,
-                        hintText: 'Year',
+                        hintText: 'Year (Please Enter in Numerics only)',
                       ),
                       const SizedBox(height: 16),
 
