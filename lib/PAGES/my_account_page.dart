@@ -11,6 +11,7 @@ import '../MODELS/postModel.dart';
 import 'edit_profile_page.dart';
 
 final baseUrl = "https://univox-backend-r0u6.onrender.com";
+
 class AccountPage extends StatefulWidget {
   final String? token;
 
@@ -25,6 +26,7 @@ class _AccountPageState extends State<AccountPage> {
   late Map<String, dynamic> userData;
   List<Post> userPosts = [];
   bool isLoading = true;
+  String profilePictureURL = '';
 
   @override
   void initState() {
@@ -37,13 +39,12 @@ class _AccountPageState extends State<AccountPage> {
     Map<String, dynamic> decoded = JwtDecoder.decode(widget.token ?? '');
     userId = decoded['_id'];
     userData = decoded;
+    profilePictureURL = userData['profilePictureURL'] ?? '';
   }
 
   Future<void> fetchUserPosts() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/post/$userId'),
-      );
+      final response = await http.get(Uri.parse('$baseUrl/post/$userId'));
 
       if (response.statusCode == 200) {
         List<dynamic> data = jsonDecode(response.body);
@@ -61,17 +62,15 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> deletePost(String postId) async {
     try {
-      final response = await http.delete(
-        Uri.parse('$baseUrl/post/$postId'),
-      );
+      final response = await http.delete(Uri.parse('$baseUrl/post/$postId'));
 
       if (response.statusCode == 200) {
         setState(() {
           userPosts.removeWhere((post) => post.id == postId);
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Post deleted")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Post deleted")));
       } else {
         throw Exception("Delete failed");
       }
@@ -83,111 +82,139 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/background.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/background.png', fit: BoxFit.cover),
           ),
           isLoading
               ? Center(child: CircularProgressIndicator())
               : SafeArea(
-            child: RefreshIndicator(
-              onRefresh: fetchUserPosts,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(16),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.of(context).size.height,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Avatar & Edit Icon
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.3),
+                  child: RefreshIndicator(
+                    onRefresh: fetchUserPosts,
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Avatar & Edit Icon
+                            ClipRRect(
                               borderRadius: BorderRadius.circular(30),
-                              border: Border.all(color: Colors.white, width: 2),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 50,
-                                      backgroundColor: Colors.grey[300],
-                                      backgroundImage: userData['profilePictureURL'] == '' ? AssetImage('assets/default.png') : NetworkImage(userData['profilePictureURL']),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    IconButton(
-                                      icon: Icon(Icons.edit, color: Colors.deepPurple),
-                                      onPressed: () async {
-                                        final updated = await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => EditProfilePage(
-                                                userData: userData, userId: userId),
-                                          ),
-                                        );
-                                        if (updated == true) {
-                                          setState(() => decodeToken());
-                                        }
-                                      },
-                                    ),
-                                  ],
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 30,
+                                  sigmaY: 30,
                                 ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  userData['username'] ?? "Unknown",
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 50,
+                                            backgroundColor: Colors.grey[300],
+                                            backgroundImage:
+                                                profilePictureURL ==
+                                                    ''
+                                                ? AssetImage(
+                                                    'assets/default.png',
+                                                  )
+                                                : NetworkImage(
+                                                    profilePictureURL,
+                                                  ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Colors.deepPurple,
+                                            ),
+                                            onPressed: () async {
+                                              final updated =
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          EditProfilePage(
+                                                            userData: userData,
+                                                            userId: userId,
+                                                          ),
+                                                    ),
+                                                  );
+                                              if (updated == true) {
+                                                setState(() => decodeToken());
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        userData['username'] ?? "Unknown",
+                                        style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        userData['email'] ?? "",
+                                        style: const TextStyle(
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      buildDetailField(
+                                        Icons.school,
+                                        userData['college'],
+                                      ),
+                                      buildDetailField(
+                                        Icons.engineering,
+                                        "${userData['branch']} • ${userData['year']} Year",
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  userData['email'] ?? "",
-                                  style: const TextStyle(color: Colors.black87),
-                                ),
-                                const SizedBox(height: 10),
-                                buildDetailField(Icons.school, userData['college']),
-                                buildDetailField(Icons.engineering,
-                                    "${userData['branch']} • ${userData['year']} Year"),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
 
-                      const SizedBox(height: 25),
-                      const Text(
-                        "My Posts",
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                            const SizedBox(height: 25),
+                            const Text(
+                              "My Posts",
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ...userPosts.map((post) => buildPostCard(post)),
+                            const SizedBox(height: 30),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      ...userPosts.map((post) => buildPostCard(post)),
-                      const SizedBox(height: 30),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -268,12 +295,18 @@ class _AccountPageState extends State<AccountPage> {
                     children: [
                       Icon(
                         post.isPublic == true ? Icons.public : Icons.lock,
-                        color: post.isPublic == true ? Colors.green : Colors.grey,
+                        color: post.isPublic == true
+                            ? Colors.green
+                            : Colors.grey,
                       ),
                       const SizedBox(width: 8),
                       Text(post.isPublic == true ? "Public" : "Private"),
                       const SizedBox(width: 16),
-                      const Icon(Icons.arrow_upward, size: 18, color: Colors.green),
+                      const Icon(
+                        Icons.arrow_upward,
+                        size: 18,
+                        color: Colors.green,
+                      ),
                       const SizedBox(width: 4),
                       Text(post.upvotes.toString()),
                     ],
@@ -294,8 +327,6 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-
-
   void confirmDelete(Post post) {
     showDialog(
       context: context,
@@ -303,7 +334,10 @@ class _AccountPageState extends State<AccountPage> {
         title: const Text("Delete Post"),
         content: const Text("Are you sure you want to delete this post?"),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
@@ -315,6 +349,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
   Future<void> updatePostVisibility(String id, bool isPublic) async {
     try {
       final response = await http.patch(
@@ -342,18 +377,18 @@ class _AccountPageState extends State<AccountPage> {
           }).toList();
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Post is now ${isPublic ? 'Public' : 'Private'}")),
+          SnackBar(
+            content: Text("Post is now ${isPublic ? 'Public' : 'Private'}"),
+          ),
         );
       } else {
         throw Exception("Visibility update failed");
       }
     } catch (e) {
       print("Visibility update error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error updating post visibility")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error updating post visibility")));
     }
-
   }
-
 }

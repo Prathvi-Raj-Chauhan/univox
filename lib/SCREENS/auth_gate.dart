@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:univox/PAGES/otp_verfication.dart';
+import 'package:univox/PAGES/register.dart';
 
 import '../PAGES/login_page.dart';
 import 'main_screen_with_bottom_nav.dart';
-
 
 class Authgate extends StatefulWidget {
   final String? token;
@@ -29,16 +30,19 @@ class _AuthgateState extends State<Authgate> {
       payload = JwtDecoder.decode(token);
     } catch (_) {
       // not a parseable JWT
-      return loginPage(token: widget.token,);
+      return loginPage(token: widget.token);
     }
 
     // 3. Check `exp`
     final expClaim = payload['exp'];
     if (expClaim == null || JwtDecoder.isExpired(token)) {
-      return loginPage(token: widget.token,);
+      return loginPage(token: widget.token);
     }
 
     // 4. All good
+    if (payload['verified'] == false) {
+      return registerPage(token: widget.token);
+    }
 
     return MainScreenWithNavBar(token: widget.token);
   }

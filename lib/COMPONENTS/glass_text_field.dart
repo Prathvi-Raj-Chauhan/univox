@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 class glassTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
-  const glassTextField({super.key, required this.controller, required this.hintText});
+  final bool obscure;
+  const glassTextField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    required this.obscure,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      obscureText: obscure,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.8)),

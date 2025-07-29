@@ -42,6 +42,36 @@ Future<void> uploadPost(BuildContext context, PostFormProvider formProvider, boo
 
       formProvider.clearFields();
 
+      if(isPublished){
+        showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text('Draft Created Successfully'),
+              content: Text("You can checkout drafts in My Account page and Make it public in future"),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context), child: Text("OK")),
+              ],
+            ),
+      );
+      }
+      else{
+        showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text('Post Created Successfully'),
+              content: Text("You can checkout Post in My Account page and its Live"),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context), child: Text("OK")),
+              ],
+            ),
+      );
+      }
+      
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => PostPage(

@@ -23,7 +23,7 @@ class _loginPageState extends State<loginPage> {
   final TextEditingController _pass = TextEditingController();
 
   late SharedPreferences prefs;
-  bool _isLoading = false; // <-- Add this line
+  bool _isLoading = false; 
 
   @override
   void initState() {
@@ -79,6 +79,7 @@ class _loginPageState extends State<loginPage> {
 
                         glassTextField(
                           controller: _email,
+                          obscure: false,
                           hintText: 'Enter Email',
                         ),
 
@@ -86,6 +87,7 @@ class _loginPageState extends State<loginPage> {
 
                         glassTextField(
                           controller: _pass,
+                          obscure: true,
                           hintText: 'Enter Password',
                         ),
 

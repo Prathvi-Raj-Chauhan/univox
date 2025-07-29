@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univox/PAGES/otp_verfication.dart';
 import 'package:univox/PAGES/setup_account.dart';
 
 import 'PROVIDERS/bottom_navbar.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // home: AccountSetupPage(token: token),
         home: Authgate(token: token),
+        // home: OtpVerficationPage(token: token, email: "prc@prc2.com",),
       ),
     );
   }

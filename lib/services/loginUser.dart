@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univox/PAGES/otp_verfication.dart';
+import 'package:univox/PAGES/register.dart';
 
 
 import '../PAGES/setup_account.dart';
@@ -13,6 +15,22 @@ import '../SCREENS/main_screen_with_bottom_nav.dart';
 final baseUrl = "https://univox-backend-r0u6.onrender.com";
 
 Future<void> loginUser(BuildContext context, TextEditingController _email, TextEditingController _pass, SharedPreferences prefs, String? token) async{
+  
+  final isValidEmail = RegExp(
+          r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        .hasMatch(_email.text.trim());
+
+    if (!isValidEmail) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text('Invalid Email Address'),
+          content: Text('Please enter a valid email.'),
+        ),
+      );
+      return;
+    }
+  
   var loginBody = {
     "email":_email.text,
     "password":_pass.text
@@ -35,7 +53,7 @@ Future<void> loginUser(BuildContext context, TextEditingController _email, TextE
             ),
       );
 
-      _email.clear();
+      
       _pass.clear();
       Map<String, dynamic> map = JwtDecoder.decode(userToken);
       if((map['college'] ?? '') == '' ||
@@ -44,6 +62,13 @@ Future<void> loginUser(BuildContext context, TextEditingController _email, TextE
           (map['username'] ?? '') == ''){
         Navigator.of(context).pushAndRemoveUntil(/// if we use pushAndRemoveUntil user wont be able to get back to this page
           MaterialPageRoute(builder: (context) => AccountSetupPage(token: userToken)),
+              (route) => false,
+        );
+        return;
+      }
+      else if((map['verified'] ?? false) == false){
+        Navigator.of(context).pushAndRemoveUntil(/// if we use pushAndRemoveUntil user wont be able to get back to this page
+          MaterialPageRoute(builder: (context) => OtpVerficationPage(token: userToken,email: _email.text,)),
               (route) => false,
         );
         return;

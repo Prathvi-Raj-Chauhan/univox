@@ -54,8 +54,6 @@ class _AccountSetupPageState extends State<AccountSetupPage> {
     Map<String, dynamic> decoded = JwtDecoder.decode(widget.token!);
     String userId = decoded['_id'];
 
-  
-
     try {
       final uri = Uri.parse("$baseUrl/user/setup");
       final response = http.MultipartRequest("PATCH", uri);
@@ -64,7 +62,7 @@ class _AccountSetupPageState extends State<AccountSetupPage> {
       response.fields['year'] = _year.text.trim();
       response.fields['username'] = _username.text.trim();
       response.fields['userId'] = userId;
-      
+
       if (_imageFile != null) {
         final image = await http.MultipartFile.fromPath(
           'profilePicture',
@@ -288,19 +286,29 @@ class _AccountSetupPageState extends State<AccountSetupPage> {
 
                       glassTextField(
                         controller: _college,
+                        obscure: false,
                         hintText: 'College Name',
                       ),
                       const SizedBox(height: 16),
 
-                      glassTextField(controller: _branch, hintText: 'Branch'),
+                      glassTextField(
+                        controller: _branch,
+                        obscure: false,
+                        hintText: 'Branch',
+                      ),
                       const SizedBox(height: 16),
 
-                      glassTextField(controller: _year, hintText: 'Year'),
+                      glassTextField(
+                        controller: _year,
+                        obscure: false,
+                        hintText: 'Year',
+                      ),
                       const SizedBox(height: 16),
 
                       glassTextField(
                         controller: _username,
                         hintText: 'Username',
+                        obscure: false,
                       ),
                       const SizedBox(height: 24),
 

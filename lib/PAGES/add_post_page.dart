@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -19,13 +18,14 @@ class addPost extends StatefulWidget {
 }
 
 class _addPostState extends State<addPost> {
-
   Future<void> pickImage() async {
-
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
-      final formProvider = Provider.of<PostFormProvider>(context, listen: false);
+      final formProvider = Provider.of<PostFormProvider>(
+        context,
+        listen: false,
+      );
       formProvider.setImageFile(File(picked.path));
     }
   }
@@ -37,8 +37,8 @@ class _addPostState extends State<addPost> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          surfaceTintColor: Colors.blue,
-          backgroundColor: Colors.blue.withAlpha(12),
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white.withAlpha(12),
           title: const Text(
             "Create New Post",
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -48,10 +48,7 @@ class _addPostState extends State<addPost> {
         body: Stack(
           children: [
             Positioned.fill(
-              child: Image.asset(
-                'assets/background.png',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/background.png', fit: BoxFit.cover),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -75,7 +72,7 @@ class _addPostState extends State<addPost> {
 
                     /// ✅ Image Upload Section in White Box
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(32.0, 0.0, 0.0 ,0.0),
+                      padding: const EdgeInsets.fromLTRB(32.0, 0.0, 0.0, 0.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.84,
                         height: 220,
@@ -88,87 +85,130 @@ class _addPostState extends State<addPost> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Add an Image (optional):", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+                            Text(
+                              "Add an Image (optional):",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
                             const SizedBox(height: 12),
                             formProvider.imageFile == null
                                 ? Center(
-                              child: OutlinedButton.icon(
-                                onPressed: pickImage,
-                                icon: Icon(Icons.photo),
-                                label: Text("Choose from Gallery"),
-                              ),
-                            )
+                                    child: OutlinedButton.icon(
+                                      onPressed: pickImage,
+                                      icon: Icon(Icons.photo),
+                                      label: Text("Choose from Gallery"),
+                                    ),
+                                  )
                                 : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.file(
-                                    formProvider.imageFile!,
-                                    height: 90,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.file(
+                                          formProvider.imageFile!,
+                                          height: 90,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      TextButton.icon(
+                                        onPressed: () =>
+                                            formProvider.setImageFile(null),
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.red,
+                                        ),
+                                        label: Text(
+                                          "Remove Image",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                TextButton.icon(
-                                  onPressed: () => formProvider.setImageFile(null),
-                                  icon: Icon(Icons.delete_outline, color: Colors.red),
-                                  label: Text(
-                                    "Remove Image",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
                     ),
 
-
-                    const SizedBox(height: 100),
-
+                    const SizedBox(height: 90),
+                    Text(
+                      "Slide to create your post",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            await uploadPost(context, formProvider, false, widget.token);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey.shade300,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                await uploadPost(
+                                  context,
+                                  formProvider,
+                                  false,
+                                  widget.token,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey.shade300,
+                                foregroundColor: Colors.black,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  vertical:
+                                      MediaQuery.of(context).size.height *
+                                      0.025,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              child: const Text("Save as Draft"),
                             ),
                           ),
-                          child: const Text("Save as Draft"),
                         ),
-                        const SizedBox(width: 20),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: SlideAction(
-                            text: "Create Post",
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: SlideAction(
+                              sliderButtonIconPadding: 14,
+                              text: "Create Post",
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              innerColor: Colors.white,
+                              outerColor: Colors.deepPurple,
+                              sliderButtonIcon: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.deepPurple,
+                                size: 12,
+                              ),
+                              elevation: 2,
+                              borderRadius: 18,
+                              animationDuration: const Duration(
+                                milliseconds: 500,
+                              ),
+                              onSubmit: () async {
+                                await uploadPost(
+                                  context,
+                                  formProvider,
+                                  true,
+                                  widget.token,
+                                );
+                              },
                             ),
-                            innerColor: Colors.white,
-                            outerColor: Colors.deepPurple,
-                            sliderButtonIcon: const Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.deepPurple,
-                              size: 12,
-                            ),
-                            elevation: 2,
-                            borderRadius: 12,
-                            animationDuration: const Duration(milliseconds: 500),
-                            onSubmit: () async {
-                              await uploadPost(context, formProvider, true, widget.token);
-                            },
                           ),
                         ),
                       ],

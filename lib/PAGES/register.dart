@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:univox/PAGES/otp_verfication.dart';
 import 'package:univox/PAGES/setup_account.dart';
 
 import 'package:http/http.dart' as http;
@@ -32,19 +33,37 @@ class _registerPageState extends State<registerPage> {
   bool _isLoading = false;
 
   void RegisterUser() async {
-    if (_pass.text != _cnfpass.text) {
-      showDialog(
-        context: context,
-        builder: (context) =>
-            AlertDialog(title: Text('Passwords Didn\'t match')),
-      );
-    } else {
-      setState(() {
-        _isLoading = true;
-      });
+    
+  final isValidEmail = RegExp(
+        r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+      .hasMatch(_email.text.trim());
+
+  if (!isValidEmail) {
+    showDialog(
+      context: context,
+      builder: (context) => const AlertDialog(
+        title: Text('Invalid Email Address'),
+        content: Text('Please enter a valid email.'),
+      ),
+    );
+    return;
+  }
+
+  if (_pass.text != _cnfpass.text) {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          const AlertDialog(title: Text('Passwords Didn\'t match')),
+    );
+  } else {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
       final prefs = await SharedPreferences.getInstance();
 
-      var regBody = {"email": _email.text, "password": _pass.text};
+      var regBody = {"email": _email.text.trim(), "password": _pass.text};
       var response = await http.post(
         Uri.parse('$baseUrl/user/register'),
         headers: {"Content-Type": "application/json"},
@@ -55,36 +74,44 @@ class _registerPageState extends State<registerPage> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var userToken = jsonResponse['userToken'];
         prefs.setString('token', userToken);
+
         showDialog(
           context: context,
           builder: (context) =>
-              AlertDialog(title: Text('Successfully Registered')),
+              const AlertDialog(title: Text('Successfully Registered')),
         );
+
+        String email = _email.text.trim();
         setState(() {
           _email.clear();
           _pass.clear();
           _cnfpass.clear();
         });
-        // Navigator.of(context).pushAndRemoveUntil(/// if we use pushReplacement user wont be able to get back to this page
-        //   MaterialPageRoute(builder: (context) => loginPage(token: widget.token)),
-        //       (route) => false,
-        // );
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(builder: (context) => mainScreeWithNavBar()),
-        // );
+
         Navigator.of(context).pushAndRemoveUntil(
-          /// if we use pushReplacement user wont be able to get back to this page
           MaterialPageRoute(
-            builder: (context) => AccountSetupPage(token: userToken),
+            builder: (context) =>
+                OtpVerficationPage(token: userToken, email: email),
           ),
           (route) => false,
         );
       }
-      setState(() {
-        _isLoading = false;
-      });
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text('Registration Failed'),
+          content: Text('Email already exists or some error occurred.'),
+        ),
+      );
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   @override
   void initState() {
@@ -140,6 +167,7 @@ class _registerPageState extends State<registerPage> {
 
                         glassTextField(
                           controller: _email,
+                          obscure: false,
                           hintText: 'Enter Email',
                         ),
 
@@ -147,6 +175,7 @@ class _registerPageState extends State<registerPage> {
 
                         glassTextField(
                           controller: _pass,
+                          obscure: true,
                           hintText: 'Enter Password',
                         ),
 
@@ -154,6 +183,7 @@ class _registerPageState extends State<registerPage> {
 
                         glassTextField(
                           controller: _cnfpass,
+                          obscure: true,
                           hintText: 'Re-Enter Password',
                         ),
 
@@ -189,7 +219,7 @@ class _registerPageState extends State<registerPage> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'Submit',
+                                      'Submit and Verify Email',
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
